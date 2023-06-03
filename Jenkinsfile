@@ -10,9 +10,10 @@ pipeline {
         // Build the Docker image
         script {
             withCredentials([string(credentialsId: 'dckr_pat_z6Y0LmjH555zKWUX-tDUQbON0Kc', variable: 'DOCKER_ACCESS_TOKEN')]) {
-            docker.withRegistry('', 'docker') {
-              def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
-              dockerImage.push()
+              docker.withRegistry('', 'docker') {
+                def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
+                dockerImage.push()
+              }
             }
         }
       }
@@ -25,12 +26,12 @@ pipeline {
         }
       }
     }
-    }
-  post {
+  }
+    post {
     always {
       // Clean up Docker resources after deployment
       sh 'docker-compose down'
     }
   }
- }
+ 
 }
