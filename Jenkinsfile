@@ -14,8 +14,7 @@ pipeline {
         // Build the Docker image
         script {
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
-            dockerImage.push()
+            docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
           }
         }
       }
@@ -24,7 +23,7 @@ pipeline {
     stage('Login') {
       steps {
         withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-          sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
+          sh "$DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
         }
       }
     }
