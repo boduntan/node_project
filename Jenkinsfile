@@ -12,13 +12,9 @@ pipeline {
         checkout scm
         
         // Build the Docker image
-        script {
-          withCredentials([string(credentialsId: 'dckr_pat_z6Y0LmjH555zKWUX-tDUQbON0Kc', variable: 'DOCKER_ACCESS_TOKEN')]) {
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-              def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
-              dockerImage.push()
-            }
-          }
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+          def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
+          dockerImage.push()
         }
       }
     }
@@ -52,4 +48,3 @@ pipeline {
     }
   }
 }
-
