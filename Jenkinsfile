@@ -12,9 +12,11 @@ pipeline {
         checkout scm
         
         // Build the Docker image
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-          def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
-          dockerImage.push()
+        script {
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            def dockerImage = docker.build('thecodegirl/thenodejs:latest', '--file Dockerfile .')
+            dockerImage.push()
+          }
         }
       }
     }
